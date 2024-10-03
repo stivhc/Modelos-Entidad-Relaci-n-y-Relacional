@@ -4,46 +4,18 @@ CREATE DATABASE Clinica;
 -- Conectar a base de datos
 \c Clinica;
 
--- 1. Crear la tabla 'Consulta' con los atributos solicitados
-CREATE TABLE Consulta (
-    consulta_id INT AUTO_INCREMENT PRIMARY KEY,
-    fecha DATE NOT NULL,
-    hora_atencion TIME NOT NULL,
-    numero_box INT NOT NULL
-);
+-- Se crea tabla Especialidad
+CREATE TABLE Especialidad (Codigo SERIAL PRIMARY KEY, Descripcion VARCHAR(100) NOT NULL);
 
--- 2. Crear la tabla 'Paciente' con los atributos solicitados
-CREATE TABLE Paciente (
-    paciente_id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    rut VARCHAR(12) UNIQUE NOT NULL,
-    direccion VARCHAR(255) NOT NULL
-);
+-- Se crea tabla Medico
+CREATE TABLE Medico (RUT VARCHAR(12) PRIMARY KEY, Nombre VARCHAR(100) NOT NULL, Direccion VARCHAR(150), Codigo_Especialidad INT, FOREIGN KEY (Codigo_Especialidad) REFERENCES Especialidad(Codigo));
 
--- 3. Crear la tabla 'Medico' con un atributo que indica si entrega licencia o no
-CREATE TABLE Medico (
-    medico_id INT AUTO_INCREMENT PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL,
-    rut VARCHAR(12) UNIQUE NOT NULL,
-    entrega_licencia BOOLEAN DEFAULT FALSE
-);
+-- Se crea tabla Paciente
+CREATE TABLE Paciente (RUT VARCHAR(12) PRIMARY KEY, Nombre VARCHAR(100) NOT NULL, Direccion VARCHAR(150));
 
--- 4. Crear la tabla 'Licencia' con los atributos solicitados
-CREATE TABLE Licencia (
-    licencia_id INT AUTO_INCREMENT PRIMARY KEY,
-    codigo VARCHAR(20) NOT NULL,
-    diagnostico VARCHAR(255) NOT NULL,
-    fecha_inicio DATE NOT NULL,
-    fecha_termino DATE NOT NULL,
-    paciente_id INT,
-    medico_id INT,
-    FOREIGN KEY (paciente_id) REFERENCES Paciente(paciente_id),
-    FOREIGN KEY (medico_id) REFERENCES Medico(medico_id)
-);
+-- Se crea tabla Consulta
+CREATE TABLE Consulta (id SERIAL PRIMARY KEY, Fecha DATE NOT NULL, Hora_Atencion TIME NOT NULL, Numero_Box INT NOT NULL, RUT_Medico VARCHAR(12), RUT_Paciente VARCHAR(12), FOREIGN KEY (RUT_Medico) REFERENCES Medico(RUT), FOREIGN KEY (RUT_Paciente) REFERENCES Paciente(RUT));
 
--- Relación entre consulta, paciente y médico
-ALTER TABLE Consulta
-ADD COLUMN paciente_id INT,
-ADD COLUMN medico_id INT,
-ADD CONSTRAINT fk_paciente_consulta FOREIGN KEY (paciente_id) REFERENCES Paciente(paciente_id),
-ADD CONSTRAINT fk_medico_consulta FOREIGN KEY (medico_id) REFERENCES Medico(medico_id);
+-- Se crea tabla Licencia
+CREATE TABLE Licencia (Codigo SERIAL PRIMARY KEY, Diagnostico VARCHAR(255) NOT NULL, Fecha_Inicio DATE NOT NULL, Fecha_Termino DATE NOT NULL, RUT_Medico VARCHAR(12), RUT_Paciente VARCHAR(12), FOREIGN KEY (RUT_Medico) REFERENCES Medico(RUT), FOREIGN KEY (RUT_Paciente) REFERENCES Paciente(RUT));
+
