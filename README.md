@@ -18,3 +18,6 @@ Este proyecto se enfoca en la práctica de modelado de datos utilizando los conc
 * Un médico puede tener varias consultas.
 * Un paciente puede tener varias consultas.
 * Un médico puede entregar una licencia médica a un paciente.
+
+## Diagrama
+![Home](diagrama.png)
