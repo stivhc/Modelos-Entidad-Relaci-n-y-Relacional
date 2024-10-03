@@ -1,0 +1,34 @@
+erDiagram
+    Consulta {
+        int consulta_id PK
+        date fecha
+        time hora_atencion
+        int numero_box
+    }
+    
+    Paciente {
+        int paciente_id PK
+        string nombre
+        string rut
+        string direccion
+    }
+
+    Medico {
+        int medico_id PK
+        string nombre
+        string rut
+        boolean entrega_licencia
+    }
+
+    Licencia {
+        int licencia_id PK
+        string codigo
+        string diagnostico
+        date fecha_inicio
+        date fecha_termino
+    }
+
+    Consulta ||--|| Paciente : "pertenece a"
+    Consulta ||--|| Medico : "atendida por"
+    Medico ||--o{ Licencia : "emite"
+    Paciente ||--o{ Licencia : "recibe"
